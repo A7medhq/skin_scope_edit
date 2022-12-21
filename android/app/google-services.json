@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "94066138270",
+    "project_id": "skinscope-966d7",
+    "storage_bucket": "skinscope-966d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94066138270:android:17b6da1f9cca29c75d2f8f",
+        "android_client_info": {
+          "package_name": "com.example.skin_scope"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "94066138270-d8id3tccc355im809ardvh999t5qe08v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQd1T5ln_L4Lb2guwseIFqqY9MNb-Z3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94066138270-d8id3tccc355im809ardvh999t5qe08v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
