@@ -25,7 +25,7 @@ class TipsScreen extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: EdgeInsets.symmetric(vertical: 12.0),
               child: Text(
                 'Here are some tips to help you using the app',
                 style: TextStyle(

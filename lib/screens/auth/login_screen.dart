@@ -393,8 +393,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   primary: const Color(0xFF2B3B48),
-                  minimumSize: const Size(double.infinity, 50)),
-              child: const Text('Start Using The App '),
+                  minimumSize: const Size(double.infinity, 50)
+              ),
+              child: const Text('Start'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

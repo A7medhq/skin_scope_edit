@@ -92,7 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("images/Mask Group 2.png"),
-                        fit: BoxFit.cover),
+                        // fit: BoxFit.cover,
+                        fit: BoxFit.fitHeight,
+
+                    ),
                   ),
                   child: Card(
                     shadowColor: Colors.transparent,
@@ -101,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       side: BorderSide(width: 1.5, color: Color(0xff18242D)),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 9.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -133,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Text(
                                       '1612 Stockton St, San Francisco',
                                       style: GoogleFonts.roboto(
-                                        fontSize: 10,
+                                        fontSize: 9,
                                       ),
                                     ),
                                   ],
@@ -143,11 +146,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12)),
-                                      backgroundColor: const Color(0xff18242D)),
+                                      // backgroundColor: const Color(0xff18242D)),
+                                      onPrimary: const Color(0xff18242D)),
                                   child: Text(
                                     'Get an appointment',
                                     style: GoogleFonts.roboto(
                                       fontSize: 10,
+                                      color: Colors.white
                                     ),
                                   ),
                                   onPressed: () {
@@ -229,7 +234,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(12)),
-                                    backgroundColor: const Color(0xff18242D)),
+                                            // backgroundColor: const Color(0xff18242D)),
+                                    onPrimary: const Color(0xff2B3B48)),
                                 child: Text(
                                   'Get an appointment',
                                   style: GoogleFonts.roboto(

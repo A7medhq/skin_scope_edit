@@ -10,6 +10,8 @@ import 'package:skin_scope/screens/auth/login_screen.dart';
 import 'package:skin_scope/screens/auth/signup2.dart';
 import 'package:skin_scope/screens/auth/signup_screen.dart';
 import 'package:skin_scope/screens/core/launch_screen.dart';
+import 'package:skin_scope/screens/app/form.dart';
+import 'package:skin_scope/screens/app/edit_profile.dart';
 import 'package:skin_scope/screens/drawer.dart';
 import 'package:skin_scope/screens/onboarding.dart';
 
@@ -39,9 +41,12 @@ class MyApp extends StatelessWidget {
         "/camera_screen": (context) => const CameraScreen(),
         "/profile_screen": (context) => const ProfileScreen(),
         "/bon_screen": (context) => const BonScreen(),
-        "/tips_screen": (context) => const TipsScreen(),
+        "/tips_screen": (context) => const  TipsScreen(),
         "/setting_screen": (context) => const SettingScreen(),
         "/main_home": (context) => const MainHome(),
+        "/form_screen": (context)=> const FormScreen(),
+        "/edit_profile_screen": (context)=> const EditProfile(),
+
       },
     );
   }

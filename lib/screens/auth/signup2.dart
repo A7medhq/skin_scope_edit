@@ -321,7 +321,9 @@ class _SignUp2State extends State<SignUp2> {
                 Navigator.pushNamed(context, "/login_screen");},
                   style: ElevatedButton.styleFrom(
                       primary: const Color(0xFF2B3B48),
-                      // minimumSize: const Size(400, 50)
+                      minimumSize: const Size(double.infinity, 50)
+
+                    // minimumSize: const Size(400, 50)
                   ),
                   child: Text('Sign Up',style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w400,

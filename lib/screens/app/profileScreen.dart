@@ -40,15 +40,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ))),
               Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 36.0, bottom: 24),
-                    child: const CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/profile.png',
+                  Stack(
+                    children:  [
+                      // Positioned(
+                      //   top: 55,
+                      //   left: 55,
+                      //     child: Image.asset('images/8.png')),
+
+                      Padding(
+                        padding: EdgeInsets.only(top: 36.0, bottom: 24),
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(
+                            'images/profile.png',
+                          ),
+                          radius: 70,
+                        ),
                       ),
-                      radius: 70,
-                    ),
+                      Positioned(
+                          top: 160,
+                          left: 55,
+                          child: Image.asset('images/8.png')),
+                      // Image.asset('images/8.png')
+                      
+
+                    ],
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 36.0, bottom: 24),
+                  //   child: const CircleAvatar(
+                  //     backgroundImage: AssetImage(
+                  //       'images/profile.png',
+                  //     ),
+                  //     radius: 70,
+                  //   ),
+                  // ),
+                  
+                  
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: const Text(
@@ -127,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     margin: EdgeInsets.symmetric(horizontal: 8, vertical: 24),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(7.0),
                       child: Row(
                         children: [
                           Column(
@@ -143,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                           SizedBox(
-                            width: 16,
+                            width: 8,
                           ),
                           Expanded(
                             child: Column(
@@ -162,14 +189,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       Text('32155'),
                                       SizedBox(
-                                        width: 16,
+                                        width: 4,
                                       ),
                                       Icon(
                                         Icons.calendar_today,
                                         color: Color(0xff56758F),
                                       ),
                                       SizedBox(
-                                        width: 8,
+                                        width: 1,
                                       ),
                                       Text('31/07/2021'),
                                     ],
@@ -214,10 +241,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               BorderRadius.circular(12)),
                                       side: const BorderSide(
                                           color: Color(0xff56758F)),
-                                      foregroundColor: const Color(0xff56758F)),
+                                      // foregroundColor: const Color(0xff56758F)),
+                                      primary: const Color(0xff56758F)),
                                   child: Text('Update States'),
                                   onPressed: () {
-                                    print('Pressed');
+                                    Navigator.pushNamed(context, "/edit_profile_screen" );
+
+                                    // print('Pressed');
                                   },
                                 )
                               ],
