@@ -1,14 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 // import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skin_scope/screens/drawer.dart';
 
-
-
+import '../../main.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -17,8 +19,8 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-
 class _CameraScreenState extends State<CameraScreen> {
+  final _myBox = Hive.box('mybox');
   File? imageFile;
   // @override
   // void initState() {
@@ -51,242 +53,248 @@ class _CameraScreenState extends State<CameraScreen> {
   // String? _yn2;
   // String? _yn3;
 
-
   @override
   void initState() {
     // String? _yn;
     // String? _yn1;
     // String? _yn2;
     // String? _yn3;
-    SchedulerBinding.instance.addPostFrameCallback((_) => showDialog(
-        context: context,
-        builder: (_) => Directionality(
-          textDirection: TextDirection.rtl,
-          child:FormAlert(),
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final args = ModalRoute.of(context)!.settings.arguments;
 
-          // AlertDialog(
-          //   insetPadding:
-          //   const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          //   content: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       const SizedBox(height: 30,),
-          //       Text("This section to collect your  symptoms",style: GoogleFonts.roboto(
-          //           fontWeight: FontWeight.w500,
-          //           fontSize: 18,
-          //           color: Colors.black
-          //       ),textAlign:TextAlign.left,),
-          //       const SizedBox(height: 23,),
-          //       Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 25),
-          //         child: Align(
-          //           alignment: Alignment.centerLeft,
-          //           child: Text("Dose It Hurt ?",style: GoogleFonts.roboto(
-          //               fontWeight: FontWeight.w300,
-          //               fontSize: 16,
-          //               color: Colors.black
-          //           ),textAlign:TextAlign.left,),
-          //         ),
-          //       ),
-          //       Row(
-          //         children: [
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('Yes'),
-          //                 value: "Y",
-          //                 groupValue: _yn,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn=value;
-          //                   });
-          //                 }),
-          //           ),
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('No'),
-          //                 value: "N",
-          //                 groupValue: _yn,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn=value;
-          //                   });
-          //                 }),
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(height: 24,),
-          //       Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 25),
-          //         child: Align(
-          //           alignment: Alignment.centerLeft,
-          //           child: Text("Dose It Itch ?",style: GoogleFonts.roboto(
-          //               fontWeight: FontWeight.w300,
-          //               fontSize: 16,
-          //               color: Colors.black
-          //           ),textAlign:TextAlign.left,),
-          //         ),
-          //       ),
-          //       Row(
-          //         children: [
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('Yes'),
-          //                 value: "Y",
-          //                 groupValue: _yn1,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn1=value;
-          //                   });
-          //                 }),
-          //           ),
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('No'),
-          //                 value: "N",
-          //                 groupValue: _yn1,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn1=value;
-          //                   });
-          //                 }),
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(height: 24,),
-          //       Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 25),
-          //         child: Align(
-          //           alignment: Alignment.centerLeft,
-          //           child: Text("Dose It Grew ?",style: GoogleFonts.roboto(
-          //               fontWeight: FontWeight.w300,
-          //               fontSize: 16,
-          //               color: Colors.black
-          //           ),textAlign:TextAlign.left,),
-          //         ),
-          //       ),
-          //       Row(
-          //         children: [
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('Yes'),
-          //                 value: "Y",
-          //                 groupValue: _yn2,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn2=value;
-          //                   });
-          //                 }),
-          //           ),
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('No'),
-          //                 value: "N",
-          //                 groupValue: _yn2,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn2=value;
-          //                   });
-          //                 }),
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(height: 24,),
-          //       Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 25),
-          //         child: Align(
-          //           alignment: Alignment.centerLeft,
-          //           child: Text("Dose It Bleed ?",style: GoogleFonts.roboto(
-          //               fontWeight: FontWeight.w300,
-          //               fontSize: 16,
-          //               color: Colors.black
-          //           ),textAlign:TextAlign.left,),
-          //         ),
-          //       ),
-          //       Row(
-          //         children: [
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('Yes'),
-          //                 value: "Y",
-          //                 groupValue: _yn3,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn3=value;
-          //                   });
-          //                 }),
-          //           ),
-          //           Expanded(
-          //             child: RadioListTile<String>(
-          //                 title: const Text('No'),
-          //                 value: "N",
-          //                 groupValue: _yn3,
-          //                 onChanged: (String? value){
-          //                   setState((){
-          //                     _yn3=value;
-          //                   });
-          //                 }),
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(height: 32,),
-          //       Row(
-          //         children: [
-          //           Expanded(
-          //             child: ElevatedButton(onPressed: (){
-          //               // performLogin();
-          //               // Navigator.pop(context);
-          //               Navigator.pushNamed(context, "/home_screen");
-          //
-          //               // Navigator.pushNamed(context, "/home_screen");
-          //               // Navigator.pushNamed(context, "/home_screen");
-          //             },
-          //                 style: ElevatedButton.styleFrom(
-          //                   // primary: const Color(0xFF2B3B48),
-          //                     primary: Colors.white,
-          //                     minimumSize: const Size(300, 50)
-          //                 ),
-          //                 child: Text('Cancel',style: GoogleFonts.roboto(
-          //                     fontWeight: FontWeight.w400,
-          //                     fontSize: 20,
-          //                     color: Color(0xFF2B3B48)
-          //                 ),)),
-          //           ),
-          //           const SizedBox(width: 5,),
-          //           Expanded(
-          //             child: ElevatedButton(onPressed: (){
-          //               // performLogin();
-          //               Navigator.pushNamed(context, "/camera_screen");
-          //               // Navigator.pushNamed(context, "/home_screen");
-          //             },
-          //                 style: ElevatedButton.styleFrom(
-          //                     primary: const Color(0xFF2B3B48),
-          //                     minimumSize: const Size(400, 50)
-          //                 ),
-          //                 child: Text('Takes Photo',style: GoogleFonts.roboto(
-          //                     fontWeight: FontWeight.w400,
-          //                     fontSize: 20,
-          //                     color: Colors.white
-          //                 ),)),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          //   // actions: [
-          //   //   TextButton(
-          //   //       onPressed: () {
-          //   //         Navigator.of(context).pop();
-          //   //       },
-          //   //       child: const Text('تم'))
-          //   // ],
-          //   shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(12.0)),
-          //   elevation: 5,
-          // ),
-        )));
+      if (args == null) {
+        showDialog(
+            context: context,
+            builder: (_) => Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: FormAlert(),
+
+                  // AlertDialog(
+                  //   insetPadding:
+                  //   const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  //   content: Column(
+                  //     mainAxisSize: MainAxisSize.min,
+                  //     children: [
+                  //       const SizedBox(height: 30,),
+                  //       Text("This section to collect your  symptoms",style: GoogleFonts.roboto(
+                  //           fontWeight: FontWeight.w500,
+                  //           fontSize: 18,
+                  //           color: Colors.black
+                  //       ),textAlign:TextAlign.left,),
+                  //       const SizedBox(height: 23,),
+                  //       Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 25),
+                  //         child: Align(
+                  //           alignment: Alignment.centerLeft,
+                  //           child: Text("Dose It Hurt ?",style: GoogleFonts.roboto(
+                  //               fontWeight: FontWeight.w300,
+                  //               fontSize: 16,
+                  //               color: Colors.black
+                  //           ),textAlign:TextAlign.left,),
+                  //         ),
+                  //       ),
+                  //       Row(
+                  //         children: [
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('Yes'),
+                  //                 value: "Y",
+                  //                 groupValue: _yn,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('No'),
+                  //                 value: "N",
+                  //                 groupValue: _yn,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 24,),
+                  //       Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 25),
+                  //         child: Align(
+                  //           alignment: Alignment.centerLeft,
+                  //           child: Text("Dose It Itch ?",style: GoogleFonts.roboto(
+                  //               fontWeight: FontWeight.w300,
+                  //               fontSize: 16,
+                  //               color: Colors.black
+                  //           ),textAlign:TextAlign.left,),
+                  //         ),
+                  //       ),
+                  //       Row(
+                  //         children: [
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('Yes'),
+                  //                 value: "Y",
+                  //                 groupValue: _yn1,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn1=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('No'),
+                  //                 value: "N",
+                  //                 groupValue: _yn1,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn1=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 24,),
+                  //       Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 25),
+                  //         child: Align(
+                  //           alignment: Alignment.centerLeft,
+                  //           child: Text("Dose It Grew ?",style: GoogleFonts.roboto(
+                  //               fontWeight: FontWeight.w300,
+                  //               fontSize: 16,
+                  //               color: Colors.black
+                  //           ),textAlign:TextAlign.left,),
+                  //         ),
+                  //       ),
+                  //       Row(
+                  //         children: [
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('Yes'),
+                  //                 value: "Y",
+                  //                 groupValue: _yn2,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn2=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('No'),
+                  //                 value: "N",
+                  //                 groupValue: _yn2,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn2=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 24,),
+                  //       Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 25),
+                  //         child: Align(
+                  //           alignment: Alignment.centerLeft,
+                  //           child: Text("Dose It Bleed ?",style: GoogleFonts.roboto(
+                  //               fontWeight: FontWeight.w300,
+                  //               fontSize: 16,
+                  //               color: Colors.black
+                  //           ),textAlign:TextAlign.left,),
+                  //         ),
+                  //       ),
+                  //       Row(
+                  //         children: [
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('Yes'),
+                  //                 value: "Y",
+                  //                 groupValue: _yn3,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn3=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //           Expanded(
+                  //             child: RadioListTile<String>(
+                  //                 title: const Text('No'),
+                  //                 value: "N",
+                  //                 groupValue: _yn3,
+                  //                 onChanged: (String? value){
+                  //                   setState((){
+                  //                     _yn3=value;
+                  //                   });
+                  //                 }),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 32,),
+                  //       Row(
+                  //         children: [
+                  //           Expanded(
+                  //             child: ElevatedButton(onPressed: (){
+                  //               // performLogin();
+                  //               // Navigator.pop(context);
+                  //               Navigator.pushNamed(context, "/home_screen");
+                  //
+                  //               // Navigator.pushNamed(context, "/home_screen");
+                  //               // Navigator.pushNamed(context, "/home_screen");
+                  //             },
+                  //                 style: ElevatedButton.styleFrom(
+                  //                   // primary: const Color(0xFF2B3B48),
+                  //                     primary: Colors.white,
+                  //                     minimumSize: const Size(300, 50)
+                  //                 ),
+                  //                 child: Text('Cancel',style: GoogleFonts.roboto(
+                  //                     fontWeight: FontWeight.w400,
+                  //                     fontSize: 20,
+                  //                     color: Color(0xFF2B3B48)
+                  //                 ),)),
+                  //           ),
+                  //           const SizedBox(width: 5,),
+                  //           Expanded(
+                  //             child: ElevatedButton(onPressed: (){
+                  //               // performLogin();
+                  //               Navigator.pushNamed(context, "/camera_screen");
+                  //               // Navigator.pushNamed(context, "/home_screen");
+                  //             },
+                  //                 style: ElevatedButton.styleFrom(
+                  //                     primary: const Color(0xFF2B3B48),
+                  //                     minimumSize: const Size(400, 50)
+                  //                 ),
+                  //                 child: Text('Takes Photo',style: GoogleFonts.roboto(
+                  //                     fontWeight: FontWeight.w400,
+                  //                     fontSize: 20,
+                  //                     color: Colors.white
+                  //                 ),)),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   // actions: [
+                  //   //   TextButton(
+                  //   //       onPressed: () {
+                  //   //         Navigator.of(context).pop();
+                  //   //       },
+                  //   //       child: const Text('تم'))
+                  //   // ],
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(12.0)),
+                  //   elevation: 5,
+                  // ),
+                ));
+      }
+    });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -348,6 +356,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (file?.path != null) {
       setState(() {
         imageFile = File(file!.path);
+        _myBox.put('image', base64Encode(imageFile!.readAsBytesSync()));
       });
     }
   }
@@ -487,9 +496,6 @@ class _CameraScreenState extends State<CameraScreen> {
   // }
 }
 
-
-
-
 class FormAlert extends StatefulWidget {
   const FormAlert({Key? key}) : super(key: key);
 
@@ -504,226 +510,270 @@ class _FormAlertState extends State<FormAlert> {
   String? _yn3;
   @override
   Widget build(BuildContext context) {
-    return (
-        AlertDialog(
-          insetPadding:
-          const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+    return (AlertDialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          Text(
+            "This section to collect your  symptoms",
+            style: GoogleFonts.roboto(
+                fontWeight: FontWeight.w500, fontSize: 18, color: Colors.black),
+            textAlign: TextAlign.left,
+          ),
+          const SizedBox(
+            height: 23,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Dose It Hurt ?",
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                    color: Colors.black),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          Row(
             children: [
-              const SizedBox(height: 30,),
-              Text("This section to collect your  symptoms",style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  color: Colors.black
-              ),textAlign:TextAlign.left,),
-              const SizedBox(height: 23,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Dose It Hurt ?",style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16,
-                      color: Colors.black
-                  ),textAlign:TextAlign.left,),
-                ),
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('Yes'),
+                    value: "Y",
+                    groupValue: _yn,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn = value;
+                      });
+                    }),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('Yes'),
-                        value: "Y",
-                        groupValue: _yn,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn=value;
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('No'),
-                        value: "N",
-                        groupValue: _yn,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn=value;
-                          });
-                        }),
-                  ),
-                ],
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('No'),
+                    value: "N",
+                    groupValue: _yn,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn = value;
+                      });
+                    }),
               ),
-              const SizedBox(height: 24,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Dose It Itch ?",style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16,
-                      color: Colors.black
-                  ),textAlign:TextAlign.left,),
-                ),
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Dose It Itch ?",
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                    color: Colors.black),
+                textAlign: TextAlign.left,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('Yes'),
-                        value: "Y",
-                        groupValue: _yn1,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn1=value;
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('No'),
-                        value: "N",
-                        groupValue: _yn1,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn1=value;
-                          });
-                        }),
-                  ),
-                ],
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('Yes'),
+                    value: "Y",
+                    groupValue: _yn1,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn1 = value;
+                      });
+                    }),
               ),
-              const SizedBox(height: 24,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Dose It Grew ?",style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16,
-                      color: Colors.black
-                  ),textAlign:TextAlign.left,),
-                ),
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('No'),
+                    value: "N",
+                    groupValue: _yn1,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn1 = value;
+                      });
+                    }),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('Yes'),
-                        value: "Y",
-                        groupValue: _yn2,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn2=value;
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('No'),
-                        value: "N",
-                        groupValue: _yn2,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn2=value;
-                          });
-                        }),
-                  ),
-                ],
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Dose It Grew ?",
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                    color: Colors.black),
+                textAlign: TextAlign.left,
               ),
-              const SizedBox(height: 24,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Dose It Bleed ?",style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16,
-                      color: Colors.black
-                  ),textAlign:TextAlign.left,),
-                ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('Yes'),
+                    value: "Y",
+                    groupValue: _yn2,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn2 = value;
+                      });
+                    }),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('Yes'),
-                        value: "Y",
-                        groupValue: _yn3,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn3=value;
-                          });
-                        }),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                        title: const Text('No'),
-                        value: "N",
-                        groupValue: _yn3,
-                        onChanged: (String? value){
-                          setState((){
-                            _yn3=value;
-                          });
-                        }),
-                  ),
-                ],
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('No'),
+                    value: "N",
+                    groupValue: _yn2,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn2 = value;
+                      });
+                    }),
               ),
-              const SizedBox(height: 32,),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(onPressed: (){
+            ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Dose It Bleed ?",
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16,
+                    color: Colors.black),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('Yes'),
+                    value: "Y",
+                    groupValue: _yn3,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn3 = value;
+                      });
+                    }),
+              ),
+              Expanded(
+                child: RadioListTile<String>(
+                    title: const Text('No'),
+                    value: "N",
+                    groupValue: _yn3,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _yn3 = value;
+                      });
+                    }),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
                       // performLogin();
                       // Navigator.pop(context);
-                      Navigator.pushNamed(context, "/home_screen");
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return MainHome(selectedPage: 0);
+                          },
+                        ),
+                      );
 
                       // Navigator.pushNamed(context, "/home_screen");
                       // Navigator.pushNamed(context, "/home_screen");
                     },
-                        style: ElevatedButton.styleFrom(
-                          // primary: const Color(0xFF2B3B48),
-                            primary: Colors.white,
-                            minimumSize: const Size(300, 50)
-                        ),
-                        child: Text('Cancel',style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20,
-                            color: Color(0xFF2B3B48)
-                        ),)),
-                  ),
-                  const SizedBox(width: 5,),
-                  Expanded(
-                    child: ElevatedButton(onPressed: (){
+                    style: ElevatedButton.styleFrom(
+                        // primary: const Color(0xFF2B3B48),
+                        primary: Colors.white,
+                        minimumSize: const Size(300, 50)),
+                    child: Text(
+                      'Cancel',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                          color: Color(0xFF2B3B48)),
+                    )),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
                       // performLogin();
-                      Navigator.pushNamed(context, "/camera_screen");
+
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          settings: const RouteSettings(arguments: true),
+                          builder: (context) {
+                            return MainHome(selectedPage: 1);
+                          },
+                        ),
+                      );
+
+                      // // Navigator.pushNamed(context, "/camera_screen",
+                      //    );
                       // Navigator.pushNamed(context, "/home_screen");
                     },
-                        style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF2B3B48),
-                            minimumSize: const Size(400, 50)
-                        ),
-                        child: Text('Takes Photo',style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20,
-                            color: Colors.white
-                        ),)),
-                  ),
-                ],
+                    style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF2B3B48),
+                        minimumSize: const Size(400, 50)),
+                    child: Text(
+                      'Takes Photo',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                          color: Colors.white),
+                    )),
               ),
             ],
           ),
-          // actions: [
-          //   TextButton(
-          //       onPressed: () {
-          //         Navigator.of(context).pop();
-          //       },
-          //       child: const Text('تم'))
-          // ],
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0)),
-          elevation: 5,
-        )
-    );
+        ],
+      ),
+      // actions: [
+      //   TextButton(
+      //       onPressed: () {
+      //         Navigator.of(context).pop();
+      //       },
+      //       child: const Text('تم'))
+      // ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      elevation: 5,
+    ));
   }
 }

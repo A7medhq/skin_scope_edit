@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:skin_scope/screens/app/bottom_navigation_screen.dart';
 import 'package:skin_scope/screens/app/cameraScreen.dart';
+import 'package:skin_scope/screens/app/edit_profile.dart';
+import 'package:skin_scope/screens/app/form.dart';
 import 'package:skin_scope/screens/app/home.dart';
 import 'package:skin_scope/screens/app/profileScreen.dart';
 import 'package:skin_scope/screens/app/setting_screen.dart';
@@ -10,8 +14,6 @@ import 'package:skin_scope/screens/auth/login_screen.dart';
 import 'package:skin_scope/screens/auth/signup2.dart';
 import 'package:skin_scope/screens/auth/signup_screen.dart';
 import 'package:skin_scope/screens/core/launch_screen.dart';
-import 'package:skin_scope/screens/app/form.dart';
-import 'package:skin_scope/screens/app/edit_profile.dart';
 import 'package:skin_scope/screens/drawer.dart';
 import 'package:skin_scope/screens/onboarding.dart';
 
@@ -20,6 +22,13 @@ import 'models/bn_screen.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Onitialize Hive
+  await Hive.initFlutter();
+
+  // Open The Box
+  var box = await Hive.openBox('mybox');
+
   runApp(const MyApp());
 }
 
@@ -41,19 +50,22 @@ class MyApp extends StatelessWidget {
         "/camera_screen": (context) => const CameraScreen(),
         "/profile_screen": (context) => const ProfileScreen(),
         "/bon_screen": (context) => const BonScreen(),
-        "/tips_screen": (context) => const  TipsScreen(),
+        "/tips_screen": (context) => const TipsScreen(),
         "/setting_screen": (context) => const SettingScreen(),
-        "/main_home": (context) => const MainHome(),
-        "/form_screen": (context)=> const FormScreen(),
-        "/edit_profile_screen": (context)=> const EditProfile(),
-
+        "/main_home": (context) => MainHome(
+              selectedPage: 0,
+            ),
+        "/form_screen": (context) => const FormScreen(),
+        "/edit_profile_screen": (context) => const EditProfile(),
       },
     );
   }
 }
 
 class MainHome extends StatefulWidget {
-  const MainHome({Key? key}) : super(key: key);
+  int selectedPage;
+
+  MainHome({Key? key, required this.selectedPage}) : super(key: key);
 
   @override
   State<MainHome> createState() => _MainHomeState();
@@ -66,6 +78,13 @@ class _MainHomeState extends State<MainHome> {
     const BnScreen(title: 'Camera', widget: CameraScreen()),
     const BnScreen(title: 'Profile', widget: ProfileScreen()),
   ];
+
+  @override
+  void initState() {
+    _selectedPageIndex = widget.selectedPage;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -186,6 +186,4 @@ class _BonScreenState extends State<BonScreen> {
       ),
     );
   }
-
 }
-

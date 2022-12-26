@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:skin_scope/screens/drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -9,6 +14,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final _myBox = Hive.box('mybox');
+
+  Uint8List? decodedBytes;
+
+  @override
+  void initState() {
+    final bytes = _myBox.get('image');
+
+    decodedBytes = base64Decode(bytes);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Column(
                 children: [
                   Stack(
-                    children:  [
+                    children: [
                       // Positioned(
                       //   top: 55,
                       //   left: 55,
@@ -61,8 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           left: 55,
                           child: Image.asset('images/8.png')),
                       // Image.asset('images/8.png')
-                      
-
                     ],
                   ),
                   // Padding(
@@ -74,8 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //     radius: 70,
                   //   ),
                   // ),
-                  
-                  
+
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: const Text(
@@ -161,10 +176,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Column(
                                 children: [
-                                  Image.asset(
-                                    'images/PAT_340_714_68.png',
-                                    fit: BoxFit.fill,
-                                  ),
+                                  decodedBytes != null
+                                      ? Container(
+                                          width: 130,
+                                          height: 130,
+                                          child: Image.memory(
+                                            decodedBytes!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 130,
+                                          height: 130,
+                                          child: Icon(
+                                            Icons.camera_enhance_outlined,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                  // Image.asset(
+                                  //   'images/PAT_340_714_68.png',
+                                  //   fit: BoxFit.fill,
+                                  // ),
                                 ],
                               ),
                             ],
@@ -245,7 +277,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       primary: const Color(0xff56758F)),
                                   child: Text('Update States'),
                                   onPressed: () {
-                                    Navigator.pushNamed(context, "/edit_profile_screen" );
+                                    Navigator.pushNamed(
+                                        context, "/edit_profile_screen");
 
                                     // print('Pressed');
                                   },
