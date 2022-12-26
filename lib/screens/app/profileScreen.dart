@@ -20,10 +20,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    final bytes = _myBox.get('image');
-
-    decodedBytes = base64Decode(bytes);
-
+    if (_myBox != null) {
+      if (_myBox.get('image') != null) {
+        final bytes = _myBox.get('image');
+        decodedBytes = base64Decode(bytes);
+      }
+    }
     super.initState();
   }
 
@@ -279,7 +281,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onPressed: () {
                                     Navigator.pushNamed(
                                         context, "/edit_profile_screen");
-
                                     // print('Pressed');
                                   },
                                 )

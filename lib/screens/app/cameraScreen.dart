@@ -754,7 +754,7 @@ class _FormAlertState extends State<FormAlert> {
                         primary: const Color(0xFF2B3B48),
                         minimumSize: const Size(400, 50)),
                     child: Text(
-                      'Takes Photo',
+                      'Take a Photo',
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w400,
                           fontSize: 20,
