@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skin_scope/screens/drawer.dart';
+import 'package:tflite/tflite.dart';
 
 import '../../main.dart';
 
@@ -21,6 +22,8 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   final _myBox = Hive.box('mybox');
+  List? _outPuts;
+  bool _loading = false;
   File? imageFile;
   // @override
   // void initState() {
@@ -53,8 +56,47 @@ class _CameraScreenState extends State<CameraScreen> {
   // String? _yn2;
   // String? _yn3;
 
+  loadModel() async {
+    try {
+      await Tflite.loadModel(
+          model: "assets/model_unquant.tflite", labels: "assets/labels.txt");
+    } catch (e) {
+      print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee $e');
+    }
+  }
+
+  classifyImage(File image) async {
+    var output = await Tflite.runModelOnImage(
+        path: image.path,
+        numResults: 2,
+        threshold: 0.5,
+        imageMean: 127.5,
+        imageStd: 127.5);
+    if (output != null) {
+      setState(() {
+        _loading = false;
+        _myBox.put('result', output[0]['label'].toString().substring(1));
+        _outPuts = output;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    Tflite.close();
+    super.dispose();
+  }
+
   @override
   void initState() {
+    _loading = true;
+
+    loadModel().then((value) {
+      setState(() {
+        _loading = false;
+      });
+    });
+
     // String? _yn;
     // String? _yn1;
     // String? _yn2;
@@ -357,6 +399,7 @@ class _CameraScreenState extends State<CameraScreen> {
       setState(() {
         imageFile = File(file!.path);
         _myBox.put('image', base64Encode(imageFile!.readAsBytesSync()));
+        classifyImage(imageFile!);
       });
     }
   }
@@ -504,6 +547,8 @@ class FormAlert extends StatefulWidget {
 }
 
 class _FormAlertState extends State<FormAlert> {
+  final _myBox = Hive.box('mybox');
+
   String? _yn;
   String? _yn1;
   String? _yn2;
@@ -704,8 +749,6 @@ class _FormAlertState extends State<FormAlert> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      // performLogin();
-                      // Navigator.pop(context);
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) {
@@ -713,9 +756,6 @@ class _FormAlertState extends State<FormAlert> {
                           },
                         ),
                       );
-
-                      // Navigator.pushNamed(context, "/home_screen");
-                      // Navigator.pushNamed(context, "/home_screen");
                     },
                     style: ElevatedButton.styleFrom(
                         // primary: const Color(0xFF2B3B48),
@@ -735,20 +775,12 @@ class _FormAlertState extends State<FormAlert> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      // performLogin();
+                      _myBox.put('hurt', _yn);
+                      _myBox.put('itch', _yn1);
+                      _myBox.put('grew', _yn2);
+                      _myBox.put('bleed', _yn3);
 
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          settings: const RouteSettings(arguments: true),
-                          builder: (context) {
-                            return MainHome(selectedPage: 1);
-                          },
-                        ),
-                      );
-
-                      // // Navigator.pushNamed(context, "/camera_screen",
-                      //    );
-                      // Navigator.pushNamed(context, "/home_screen");
+                      Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF2B3B48),

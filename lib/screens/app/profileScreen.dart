@@ -15,6 +15,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _myBox = Hive.box('mybox');
+  String result = 'Unknown';
+  String hurt = 'Unknown';
+  String itch = 'Unknown';
+  String grew = 'Unknown';
+  String bleed = 'Unknown';
 
   Uint8List? decodedBytes;
 
@@ -24,6 +29,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (_myBox.get('image') != null) {
         final bytes = _myBox.get('image');
         decodedBytes = base64Decode(bytes);
+      }
+      if (_myBox.get('result') != null) {
+        result = _myBox.get('result');
+      }
+      if (_myBox.get('hurt') != null) {
+        hurt = _myBox.get('hurt');
+      }
+      if (_myBox.get('itch') != null) {
+        itch = _myBox.get('itch');
+      }
+      if (_myBox.get('grew') != null) {
+        grew = _myBox.get('grew');
+      }
+      if (_myBox.get('bleed') != null) {
+        bleed = _myBox.get('bleed');
       }
     }
     super.initState();
@@ -239,32 +259,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 4.0),
                                   child: Row(
-                                    children: const [
-                                      Text('Diagnosis: Melanoma'),
+                                    children: [
+                                      Text('Diagnosis: $result'),
                                     ],
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 4.0),
                                   child: Row(
-                                    children: const [
-                                      Text('Hurt: No'),
+                                    children: [
+                                      Text('Hurt: $hurt'),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text('Itch: Yes'),
+                                      Text('Itch: $itch'),
                                     ],
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 4.0),
                                   child: Row(
-                                    children: const [
-                                      Text('Grew: Yes'),
+                                    children: [
+                                      Text('Grew: $grew'),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text('Bleed: No'),
+                                      Text('Bleed: $bleed'),
                                     ],
                                   ),
                                 ),
