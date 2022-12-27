@@ -1,2 +1,2 @@
-0 malignant
-1 benign
+0 benign
+1 malignant

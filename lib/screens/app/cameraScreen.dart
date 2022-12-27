@@ -68,8 +68,8 @@ class _CameraScreenState extends State<CameraScreen> {
   classifyImage(File image) async {
     var output = await Tflite.runModelOnImage(
         path: image.path,
-        numResults: 2,
-        threshold: 0.5,
+        numResults: 6,
+        threshold: 0.05,
         imageMean: 127.5,
         imageStd: 127.5);
     if (output != null) {
@@ -364,6 +364,29 @@ class _CameraScreenState extends State<CameraScreen> {
                     size: MediaQuery.of(context).size.width * .6,
                   ),
                 ),
+          Column(
+            children: _outPuts != null
+                ? _outPuts!.map((result) {
+                    return Card(
+                      elevation: 0.0,
+                      color: Colors.lightBlue,
+                      child: Container(
+                        width: 300,
+                        margin: EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "${result["label"]} :  ${(result["confidence"] * 100).toStringAsFixed(1)}%",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList()
+                : [],
+          ),
           Padding(
             padding: const EdgeInsets.all(30),
             child: ElevatedButton(
